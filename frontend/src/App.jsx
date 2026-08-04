@@ -25,10 +25,12 @@ function App() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
 
   async function loadTasks() {
     setIsLoading(true);
     setError('');
+    setNotice('');
     try {
       const nextTasks = await getTasks();
       setTasks(nextTasks || []);
@@ -46,6 +48,7 @@ function App() {
   async function handleTaskSubmit(data) {
     setIsSubmitting(true);
     setError('');
+    setNotice('');
     try {
       if (editingTask) {
         const updatedTask = await updateTask(editingTask.id, data);
@@ -54,6 +57,7 @@ function App() {
         )));
         setEditingTask(null);
         setIsFormOpen(false);
+        setNotice('Tarea actualizada correctamente.');
         return updatedTask;
       }
 
@@ -61,9 +65,11 @@ function App() {
       setTasks((currentTasks) => [createdTask, ...currentTasks]);
       setEditingTask(null);
       setIsFormOpen(false);
+      setNotice('Tarea creada correctamente.');
       return createdTask;
     } catch (requestError) {
       setError(requestError.message);
+      setNotice('');
       throw requestError;
     } finally {
       setIsSubmitting(false);
@@ -74,6 +80,7 @@ function App() {
     setSelectedTask(null);
     setEditingTask(null);
     setError('');
+    setNotice('');
     setIsFormOpen(true);
   }
 
@@ -81,6 +88,7 @@ function App() {
     setSelectedTask(null);
     setEditingTask(task);
     setError('');
+    setNotice('');
     setIsFormOpen(true);
   }
 
@@ -108,6 +116,7 @@ function App() {
   async function handleToggle(task) {
     setUpdatingId(task.id);
     setError('');
+    setNotice('');
     try {
       const updatedTask = await updateTask(task.id, {
         name: task.name,
@@ -120,8 +129,10 @@ function App() {
       setSelectedTask((currentTask) => (
         currentTask?.id === updatedTask.id ? updatedTask : currentTask
       ));
+      setNotice('Estado de la tarea actualizado.');
     } catch (requestError) {
       setError(requestError.message);
+      setNotice('');
     } finally {
       setUpdatingId(null);
     }
@@ -135,13 +146,16 @@ function App() {
     const taskId = taskToDelete.id;
     setDeletingId(taskId);
     setError('');
+    setNotice('');
     try {
       await deleteTask(taskId);
       setTasks((currentTasks) => currentTasks.filter((task) => task.id !== taskId));
       setSelectedTask((currentTask) => (currentTask?.id === taskId ? null : currentTask));
       setTaskToDelete(null);
+      setNotice('Tarea eliminada correctamente.');
     } catch (requestError) {
       setError(requestError.message);
+      setNotice('');
     } finally {
       setDeletingId(null);
     }
@@ -168,6 +182,7 @@ function App() {
         </section>
 
         <ErrorMessage message={error} onRetry={!isLoading ? loadTasks : undefined} />
+        {notice ? <p className="success-message" role="status">{notice}</p> : null}
 
         <div className="content-grid">
           <section className="list-section" aria-labelledby="task-list-title">
@@ -192,6 +207,7 @@ function App() {
                 tasks={tasks}
                 deletingId={deletingId}
                 updatingId={updatingId}
+                viewingId={viewingId}
                 onToggle={handleToggle}
                 onView={handleView}
                 onEdit={handleEdit}

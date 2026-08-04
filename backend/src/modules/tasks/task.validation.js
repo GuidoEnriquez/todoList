@@ -1,4 +1,4 @@
-import ApiError from '../utils/ApiError.js';
+import ApiError from '../../utils/ApiError.js';
 
 export function validateTaskBody(req, _res, next) {
   const body = req.body && typeof req.body === 'object' ? req.body : {};

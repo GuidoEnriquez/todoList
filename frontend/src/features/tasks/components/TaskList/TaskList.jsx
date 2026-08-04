@@ -1,6 +1,6 @@
 import TaskCard from '../TaskCard/TaskCard.jsx';
 
-export default function TaskList({ tasks, deletingId, updatingId, onToggle, onView, onEdit, onDelete }) {
+export default function TaskList({ tasks, deletingId, updatingId, viewingId, onToggle, onView, onEdit, onDelete }) {
   if (tasks.length === 0) {
     return (
       <div className="empty-state">
@@ -19,6 +19,7 @@ export default function TaskList({ tasks, deletingId, updatingId, onToggle, onVi
           task={task}
           isDeleting={deletingId === task.id}
           isUpdating={updatingId === task.id}
+          isViewing={viewingId === task.id}
           onToggle={onToggle}
           onView={onView}
           onEdit={onEdit}

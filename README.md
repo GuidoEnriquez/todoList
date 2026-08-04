@@ -18,11 +18,15 @@ todolist/
 │   ├── scripts/
 │   └── src/
 │       ├── config/
-│       ├── controllers/
 │       ├── middlewares/
-│       ├── models/
-│       ├── routes/
-│       ├── services/
+│       ├── modules/
+│       │   └── tasks/
+│       │       ├── task.model.js
+│       │       ├── task.routes.js
+│       │       ├── task.controller.js
+│       │       ├── task.service.js
+│       │       ├── task.repository.js
+│       │       └── task.validation.js
 │       ├── utils/
 │       ├── app.js
 │       └── server.js

@@ -1,4 +1,4 @@
-import taskService from '../services/taskService.js';
+import taskService from './task.service.js';
 
 async function list(_req, res, next) {
   try {

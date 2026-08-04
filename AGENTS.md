@@ -37,9 +37,11 @@ No agregar funcionalidades fuera del alcance solicitado.
 * PostgreSQL.
 * dotenv.
 
-Usar `import` y `export`.
+Usar `import` y `export` en el código de la aplicación.
 
-No utilizar CommonJS, TypeScript, SQLite ni otro ORM.
+Los archivos `.cjs` de configuración, el archivo `.sequelizerc` y las migraciones pueden utilizar CommonJS únicamente por compatibilidad con `sequelize-cli`.
+
+No utilizar CommonJS en el código de la aplicación, TypeScript, SQLite ni otro ORM.
 
 ## Base de datos
 

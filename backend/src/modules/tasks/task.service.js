@@ -1,12 +1,12 @@
-import { Task } from '../models/index.js';
-import ApiError from '../utils/ApiError.js';
+import taskRepository from './task.repository.js';
+import ApiError from '../../utils/ApiError.js';
 
 async function findAll() {
-  return Task.findAll({ order: [['createdAt', 'DESC']] });
+  return taskRepository.findAll();
 }
 
 async function findById(id) {
-  const task = await Task.findByPk(id);
+  const task = await taskRepository.findById(id);
   if (!task) {
     throw ApiError.notFound('La tarea no fue encontrada');
   }
@@ -19,11 +19,11 @@ async function createTask(data) {
   if (completed !== undefined) {
     taskData.completed = completed;
   }
-  return Task.create(taskData);
+  return taskRepository.create(taskData);
 }
 
 async function updateTask(id, data) {
-  const task = await Task.findByPk(id);
+  const task = await taskRepository.findById(id);
   if (!task) {
     throw ApiError.notFound('La tarea no fue encontrada');
   }
@@ -32,15 +32,15 @@ async function updateTask(id, data) {
   if (completed !== undefined) {
     taskData.completed = completed;
   }
-  return task.update(taskData);
+  return taskRepository.update(task, taskData);
 }
 
 async function deleteTask(id) {
-  const task = await Task.findByPk(id);
+  const task = await taskRepository.findById(id);
   if (!task) {
     throw ApiError.notFound('La tarea no fue encontrada');
   }
-  await task.destroy();
+  await taskRepository.remove(task);
 }
 
 export default { findAll, findById, createTask, updateTask, deleteTask };

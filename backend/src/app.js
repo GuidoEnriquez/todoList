@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import env from './config/env.js';
-import taskRoutes from './routes/taskRoutes.js';
+import taskRoutes from './modules/tasks/task.routes.js';
 import notFound from './middlewares/notFound.js';
 import errorHandler from './middlewares/errorHandler.js';
 

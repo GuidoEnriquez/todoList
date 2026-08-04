@@ -28,6 +28,8 @@ Usar esta skill para trabajar en:
 
 `AGENTS.md` tiene prioridad sobre esta skill.
 
+El código de la aplicación debe utilizar ES Modules. Los archivos `.cjs` de configuración, el archivo `.sequelizerc` y las migraciones se reservan para la compatibilidad técnica de `sequelize-cli`.
+
 ## Arquitectura
 
 ### Frontend
@@ -38,7 +40,8 @@ src/features/tasks/
 │   ├── TaskCard/
 │   ├── TaskDetails/
 │   ├── TaskForm/
-│   └── TaskList/
+│   ├── TaskList/
+│   └── TaskModal/
 ├── services/
 │   └── taskApi.js
 └── utils/
@@ -101,14 +104,16 @@ Campos:
 * `id`
 * `name`
 * `description`
+* `completed`
 * `createdAt`
 * `updatedAt`
 
 Reglas:
 
 * `id` autogenerado.
-* `name` obligatorio, con un máximo de 150 caracteres.
+* `name` obligatorio, con un máximo de 120 caracteres.
 * `description` obligatoria, con un máximo de 2000 caracteres.
+* `completed` booleano, con valor inicial `false`.
 * Utilizar los timestamps de Sequelize.
 * No aceptar identificadores ni fechas enviados desde el frontend.
 * No agregar campos nuevos sin autorización.
@@ -129,6 +134,12 @@ Reglas:
 * Ordenarlas desde la más reciente.
 * Mostrar estado de carga, error o lista vacía.
 * No utilizar datos simulados cuando la API esté disponible.
+
+### Completar
+
+* Mostrar un checkbox para cambiar el estado de la tarea.
+* Persistir el estado mediante el endpoint `PUT`.
+* Actualizar la interfaz sin recargar la página.
 
 ### Consultar
 
@@ -161,7 +172,7 @@ Reglas:
 * Debe ser texto.
 * Es obligatorio.
 * No puede contener solamente espacios.
-* Debe tener un máximo de 150 caracteres.
+* Debe tener un máximo de 120 caracteres.
 
 ### Descripción
 
@@ -176,6 +187,11 @@ Reglas:
 * Debe rechazarse antes de consultar la base de datos si es inválido.
 
 Validar los datos tanto en el frontend como en el backend.
+
+### Estado completado
+
+* Debe ser un valor booleano cuando se envía.
+* Si no se envía al crear, debe comenzar en `false`.
 
 Las validaciones del modelo Sequelize complementan las validaciones de entrada, pero no las reemplazan.
 
@@ -264,6 +280,7 @@ Comprobar:
 * Conservación de `createdAt`.
 * Actualización de `updatedAt`.
 * Confirmación y cancelación de eliminación.
+* Cambio del estado completado.
 * Manejo de errores del backend.
 * Estados de carga en la interfaz.
 * Ausencia de recargas de página.
@@ -277,7 +294,6 @@ No agregar sin autorización:
 
 * Usuarios o autenticación.
 * Categorías o prioridades.
-* Estado de tarea completada.
 * Fechas de vencimiento.
 * Redux.
 * TypeScript.

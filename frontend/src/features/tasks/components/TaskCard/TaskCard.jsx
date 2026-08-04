@@ -51,7 +51,7 @@ function ActionIcon({ type }) {
   );
 }
 
-export default function TaskCard({ task, isDeleting, isUpdating, onToggle, onView, onEdit, onDelete }) {
+export default function TaskCard({ task, isDeleting, isUpdating, isViewing, onToggle, onView, onEdit, onDelete }) {
   return (
     <article className={`task-card${task.completed ? ' is-completed' : ''}`}>
       <div className="task-card-topline">
@@ -76,9 +76,9 @@ export default function TaskCard({ task, isDeleting, isUpdating, onToggle, onVie
         {isUpdating ? 'Guardando...' : task.completed ? 'Realizada' : 'Pendiente'}
       </span>
       <div className="task-actions">
-        <button type="button" className="button button-quiet" onClick={() => onView(task)}>
+        <button type="button" className="button button-quiet" onClick={() => onView(task)} disabled={isDeleting || isUpdating || isViewing}>
           <span className="button-icon"><ActionIcon type="view" /></span>
-          Ver detalles
+          {isViewing ? 'Cargando...' : 'Ver detalles'}
         </button>
         <button type="button" className="button button-quiet" onClick={() => onEdit(task)} disabled={isDeleting || isUpdating}>
           <span className="button-icon"><ActionIcon type="edit" /></span>
